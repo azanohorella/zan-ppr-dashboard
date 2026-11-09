@@ -1,9 +1,12 @@
+
 import { Suspense } from "react";
 
 import Header from "./components/Header";
 import SensorCards from "./components/SensorCards";
 import SensorData from "./components/SensorData";
 import Loading from "./components/Loading";
+import DeviceStatus from "./components/DeviceStatus";
+import DeviceLoading from "./components/DeviceLoading";
 
 export default function Home() {
   return (
@@ -42,10 +45,17 @@ export default function Home() {
           <SensorCards />
         </section>
 
-        {/* DYNAMIC DATA */}
+        {/* DYNAMIC BOUNDARY 1 */}
         <section className="mt-8">
           <Suspense fallback={<Loading />}>
             <SensorData />
+          </Suspense>
+        </section>
+
+        {/* DYNAMIC BOUNDARY 2 */}
+        <section className="mt-8">
+          <Suspense fallback={<DeviceLoading />}>
+            <DeviceStatus />
           </Suspense>
         </section>
 
@@ -63,7 +73,6 @@ export default function Home() {
                 <p className="text-sm text-gray-300">
                   Sensor berhasil terhubung
                 </p>
-
                 <p className="text-xs text-gray-600">
                   Baru saja
                 </p>
@@ -77,7 +86,6 @@ export default function Home() {
                 <p className="text-sm text-gray-300">
                   Data sensor diperbarui
                 </p>
-
                 <p className="text-xs text-gray-600">
                   Beberapa saat yang lalu
                 </p>
@@ -91,7 +99,6 @@ export default function Home() {
                 <p className="text-sm text-gray-300">
                   Sistem monitoring aktif
                 </p>
-
                 <p className="text-xs text-gray-600">
                   Hari ini
                 </p>

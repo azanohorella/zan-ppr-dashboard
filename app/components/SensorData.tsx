@@ -1,14 +1,18 @@
+
+import { connection } from "next/server";
+
 async function getSensorData() {
-  // Simulasi pengambilan data dari API / database
-  await new Promise((resolve) => {
-    setTimeout(resolve, 10000);
-  });
+  // Menunggu request masuk sebelum membuat data dinamis
+  await connection();
+
+  // Nilai sensor dibuat saat request berlangsung
+  const suhu = Number((20 + Math.random() * 10).toFixed(2));
 
   return {
-    temperature: 28.5,
-    light: 75,
-    distance: 120,
-    status: "Normal",
+    suhu,
+    kelembapan: 75,
+    kualitasUdara: "Baik",
+    status: "Online",
   };
 }
 
@@ -16,59 +20,39 @@ export default async function SensorData() {
   const data = await getSensorData();
 
   return (
-    <div className="rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-6 backdrop-blur-xl">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold text-white">
-            Data Sensor Terbaru
-          </h2>
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+      <h3 className="text-xl font-semibold text-white">
+        Data Sensor Real-Time
+      </h3>
 
-          <p className="mt-1 text-sm text-gray-400">
-            Data berhasil diterima dari server
-          </p>
+      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="rounded-xl bg-white/5 p-4">
+          <p className="text-sm text-gray-400">Suhu</p>
+          <h4 className="mt-2 text-2xl font-bold text-cyan-400">
+            {data.suhu}°C
+          </h4>
         </div>
 
-        <span className="rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1 text-xs font-medium text-green-400">
-          {data.status}
-        </span>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-xl bg-black/20 p-5">
-          <p className="text-sm text-gray-500">
-            Suhu
-          </p>
-
-          <p className="mt-2 text-2xl font-bold text-white">
-            {data.temperature}°C
-          </p>
+        <div className="rounded-xl bg-white/5 p-4">
+          <p className="text-sm text-gray-400">Kelembapan</p>
+          <h4 className="mt-2 text-2xl font-bold text-blue-400">
+            {data.kelembapan}%
+          </h4>
         </div>
 
-        <div className="rounded-xl bg-black/20 p-5">
-          <p className="text-sm text-gray-500">
-            LDR
-          </p>
-
-          <p className="mt-2 text-2xl font-bold text-white">
-            {data.light}%
-          </p>
+        <div className="rounded-xl bg-white/5 p-4">
+          <p className="text-sm text-gray-400">Kualitas Udara</p>
+          <h4 className="mt-2 text-2xl font-bold text-green-400">
+            {data.kualitasUdara}
+          </h4>
         </div>
 
-        <div className="rounded-xl bg-black/20 p-5">
-          <p className="text-sm text-gray-500">
-            Jarak
-          </p>
-
-          <p className="mt-2 text-2xl font-bold text-white">
-            {data.distance} cm
-          </p>
+        <div className="rounded-xl bg-white/5 p-4">
+          <p className="text-sm text-gray-400">Status Sensor</p>
+          <h4 className="mt-2 text-2xl font-bold text-green-400">
+            {data.status}
+          </h4>
         </div>
-      </div>
-
-      <div className="mt-5 border-t border-white/10 pt-4">
-        <p className="text-xs text-gray-500">
-          ✓ Data sensor berhasil diperbarui
-        </p>
       </div>
     </div>
   );
